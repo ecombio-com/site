@@ -1,20 +1,29 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": [".env*"],
+  "globalDependencies": [
+    "**/.env*"
+  ],
   "globalEnv": [
     "AI_GATEWAY_API_KEY",
     "CUSTOMER_ACCOUNT_SESSION_SECRET",
     "DEBUG_SHOPIFY",
     "EVE_DEV",
+    "MOCK_SHOP",
     "NEXT_PUBLIC_SHOPIFY_SHOP_ID",
-    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
     "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN",
     "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ID",
+    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
+    "PRIVATE_STOREFRONT_API_TOKEN",
+    "PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID",
+    "PUBLIC_STOREFRONT_ID",
+    "PUBLIC_STORE_DOMAIN",
     "REVALIDATE_SECRET",
+    "SESSION_SECRET",
     "SHOPIFY_API_VERSION",
     "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID",
     "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET",
     "SHOPIFY_WEBHOOK_SECRET",
+    "SHOP_ID",
     "UCP_AGENT_PROFILE_URL",
     "V0_CALLBACK_URL",
     "VERCEL_ENV",
@@ -22,14 +31,39 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", "build/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**"
+      ]
     },
-    "codegen": { "cache": true },
-    "dev": { "cache": false, "persistent": true },
-    "format": { "cache": false },
-    "lint": { "dependsOn": ["^build"] },
-    "start": { "cache": false, "persistent": true },
-    "typecheck": { "dependsOn": ["^build"] }
+    "codegen": {
+      "cache": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "format": {
+      "cache": false
+    },
+    "lint": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
   }
 }
