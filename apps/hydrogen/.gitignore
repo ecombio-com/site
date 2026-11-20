@@ -9,3 +9,8 @@ storefront-graphql-env.d.ts
 customer-account-graphql-env.d.ts
 
 .shopify
+
+.env.*
+!.env.example
+
+*.tsbuildinfo
