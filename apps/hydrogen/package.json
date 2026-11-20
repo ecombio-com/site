@@ -8,7 +8,10 @@
     "dev": "hydrogen skills check --mode=warn && vite dev",
     "dev:https": "hydrogen skills check --mode=warn && vite dev",
     "preview": "react-router build && vite preview",
-    "typecheck": "react-router typegen && tsc && hydrogen gql check --fail-on-warn"
+    "typecheck": "react-router typegen && tsc && hydrogen gql check --fail-on-warn",
+    "dev:bicyclebio": "portless bicyclebio.hydrogen vite dev --mode bicyclebio",
+    "dev:scooterbio": "portless scooterbio.hydrogen vite dev --mode scooterbio",
+    "dev:skaterbio": "portless skaterbio.hydrogen vite dev --mode skaterbio"
   },
   "dependencies": {
     "@remix-run/cookie": "^0.6.0",
