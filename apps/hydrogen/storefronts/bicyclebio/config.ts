@@ -10,4 +10,5 @@ export const bicyclebio: Storefront = {
     checkout: "store.bicyclebio.com",
   },
   dev: { host: "bicyclebio.hydrogen.localhost" },
+  oxygenStorefrontId: "1000186145",
 };

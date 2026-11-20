@@ -10,4 +10,6 @@ export type Storefront = {
   };
   /** Local dev host served by portless: pnpm dev:hydrogen:<id>. */
   dev: { host: string };
+  /** Shopify Hydrogen storefront ID (Oxygen deployments, workflow file name). */
+  oxygenStorefrontId: string;
 };
