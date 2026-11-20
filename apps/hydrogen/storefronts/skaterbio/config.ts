@@ -9,4 +9,5 @@ export const skaterbio: Storefront = {
     account: "auth.skaterbio.com",
     checkout: "store.skaterbio.com",
   },
+  dev: { host: "skaterbio.hydrogen.localhost" },
 };

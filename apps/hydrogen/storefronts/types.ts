@@ -8,4 +8,6 @@ export type Storefront = {
     account: string;
     checkout: string;
   };
+  /** Local dev host served by portless: pnpm dev:hydrogen:<id>. */
+  dev: { host: string };
 };

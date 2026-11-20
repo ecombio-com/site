@@ -9,4 +9,5 @@ export const scooterbio: Storefront = {
     account: "auth.scooterbio.com",
     checkout: "store.scooterbio.com",
   },
+  dev: { host: "scooterbio.hydrogen.localhost" },
 };

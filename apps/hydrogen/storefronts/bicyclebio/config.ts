@@ -9,4 +9,5 @@ export const bicyclebio: Storefront = {
     account: "auth.bicyclebio.com",
     checkout: "store.bicyclebio.com",
   },
+  dev: { host: "bicyclebio.hydrogen.localhost" },
 };
