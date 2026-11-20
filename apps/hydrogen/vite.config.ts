@@ -2,13 +2,15 @@ import { reactRouter } from "@react-router/dev/vite";
 import { localHttps } from "@shopify/hydrogen/vite";
 import { oxygen } from "@shopify/mini-oxygen/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { existsSync } from "node:fs";
 import { defineConfig } from "vite";
 
 const oxygenPlugins = oxygen();
 const enabled = process.env.npm_lifecycle_event === "dev:https";
 const httpsOptions = { enabled };
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  envDir: existsSync(`storefronts/${mode}`) ? `storefronts/${mode}` : undefined,
   plugins: [localHttps(httpsOptions), tailwindcss(), ...oxygenPlugins, reactRouter()],
   resolve: {
     tsconfigPaths: true,
@@ -45,4 +47,4 @@ export default defineConfig({
   server: {
     allowedHosts: [".tryhydrogen.dev"],
   },
-});
+}));
