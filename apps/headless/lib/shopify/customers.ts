@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+
 import { adminGraphql } from "./admin";
 
 export type ShopifyCustomer = {
@@ -9,32 +10,38 @@ export type ShopifyCustomer = {
   lastName: string | null;
 };
 
-export type OrderSummary = {
+type RawCustomer = {
   id: string;
-  name: string;
-  processedAt: string;
-  displayFinancialStatus: string | null;
-  displayFulfillmentStatus: string;
-  statusPageUrl: string;
-  totalPriceSet: { shopMoney: { amount: string; currencyCode: string } };
+  firstName: string | null;
+  lastName: string | null;
+  defaultEmailAddress: { emailAddress: string } | null;
 };
 
-const CUSTOMER_FIELDS = `id email firstName lastName`;
+const CUSTOMER_FIELDS = `id firstName lastName defaultEmailAddress { emailAddress }`;
+
+function toCustomer(raw: RawCustomer): ShopifyCustomer {
+  return {
+    id: raw.id,
+    email: raw.defaultEmailAddress?.emailAddress ?? null,
+    firstName: raw.firstName,
+    lastName: raw.lastName,
+  };
+}
 
 export async function findCustomerByEmail(email: string): Promise<ShopifyCustomer | null> {
-  const data = await adminGraphql<{ customerByIdentifier: ShopifyCustomer | null }>(
+  const data = await adminGraphql<{ customerByIdentifier: RawCustomer | null }>(
     `query FindCustomer($email: String!) {
       customerByIdentifier(identifier: { emailAddress: $email }) { ${CUSTOMER_FIELDS} }
     }`,
     { email },
   );
-  return data.customerByIdentifier;
+  return data.customerByIdentifier ? toCustomer(data.customerByIdentifier) : null;
 }
 
 async function createCustomer(email: string) {
   const data = await adminGraphql<{
     customerCreate: {
-      customer: ShopifyCustomer | null;
+      customer: RawCustomer | null;
       userErrors: { field: string[] | null; message: string }[];
     };
   }>(
@@ -46,7 +53,8 @@ async function createCustomer(email: string) {
     }`,
     { input: { email } },
   );
-  return data.customerCreate;
+  const { customer, userErrors } = data.customerCreate;
+  return { customer: customer ? toCustomer(customer) : null, userErrors };
 }
 
 /** Call only AFTER the email has been verified. */
@@ -64,43 +72,13 @@ export async function findOrCreateCustomer(email: string): Promise<ShopifyCustom
   throw new Error(`Could not create Shopify customer: ${userErrors.map((e) => e.message).join("; ")}`);
 }
 
-/** `customerId` MUST come from the verified session, never from request input. */
-export async function getCustomerWithOrders(
-  customerId: string,
-  first = 20,
-): Promise<(ShopifyCustomer & { orders: OrderSummary[] }) | null> {
-  const data = await adminGraphql<{
-    customer: (ShopifyCustomer & { orders: { nodes: OrderSummary[] } }) | null;
-  }>(
-    `query CustomerOrders($id: ID!, $first: Int!) {
-      customer(id: $id) {
-        ${CUSTOMER_FIELDS}
-        orders(first: $first, sortKey: PROCESSED_AT, reverse: true) {
-          nodes {
-            id
-            name
-            processedAt
-            displayFinancialStatus
-            displayFulfillmentStatus
-            statusPageUrl
-            totalPriceSet { shopMoney { amount currencyCode } }
-          }
-        }
-      }
-    }`,
-    { id: customerId, first },
-  );
-  if (!data.customer) return null;
-  return { ...data.customer, orders: data.customer.orders.nodes };
-}
-
 /** Per-request memoized lookup. `customerId` must come from the session. */
 export const getCustomerById = cache(
   async (customerId: string): Promise<ShopifyCustomer | null> => {
-    const data = await adminGraphql<{ customer: ShopifyCustomer | null }>(
+    const data = await adminGraphql<{ customer: RawCustomer | null }>(
       `query CustomerById($id: ID!) { customer(id: $id) { ${CUSTOMER_FIELDS} } }`,
       { id: customerId },
     );
-    return data.customer;
+    return data.customer ? toCustomer(data.customer) : null;
   },
 );
