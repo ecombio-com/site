@@ -9,6 +9,7 @@
     "dev:https": "hydrogen skills check --mode=warn && vite dev",
     "preview": "react-router build && vite preview",
     "typecheck": "react-router typegen && tsc && hydrogen gql check --fail-on-warn",
+    "typecheck:local": "react-router typegen && tsc",
     "dev:app": "vite dev"
   },
   "dependencies": {
