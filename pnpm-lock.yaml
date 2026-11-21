@@ -187,6 +187,9 @@ importers:
       '@base-ui/react':
         specifier: 1.9.0
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@shopify/checkout-kit':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@shopify/hydrogen':
         specifier: 2026.10.2
         version: 2026.10.2(react@19.3.1)(typescript@7.0.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0))
@@ -2078,6 +2081,10 @@ packages:
     resolution: {integrity: sha512-XY9DYHO5UxxVR8G6AErXDlccQmDpvGTLgKHFpvkgsyjwG/PrQuInRjQQfpEzBRuT+bhBtwfS8yDe9sPhVcq/9A==}
     cpu: [x64]
     os: [win32]
+
+  '@shopify/checkout-kit@4.0.0':
+    resolution: {integrity: sha512-zl4xhlItpP+vgaYz+JxDSVTJCOeGzfEOoyCo2/YYaVOhjEMjADkFUQ5xCwCBOw3JPbfqz8IheuCOrWBUifGUMA==}
+    engines: {node: '>=22.14.0'}
 
   '@shopify/cli@4.8.1':
     resolution: {integrity: sha512-4dy/PTmvAJfrxkXbkkKrJMowACZFQ9ZsfD6hw3BvsdUhKX0J2Kyo+9CC5taQD3KYFjQbDNG30NEnMiAV+SMlJA==}
@@ -5428,6 +5435,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.68.7':
     optional: true
+
+  '@shopify/checkout-kit@4.0.0': {}
 
   '@shopify/cli@4.8.1':
     dependencies:

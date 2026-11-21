@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
+    "@shopify/checkout-kit": "^4.0.0",
     "@shopify/hydrogen": "2026.10.2",
     "@tailwindcss/turbopack": "4.3.5",
     "@tailwindcss/typography": "0.5.20",
