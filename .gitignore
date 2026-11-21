@@ -21,3 +21,6 @@ playwright/.cache/
 
 # playwright-cli
 .playwright-cli/
+
+# graphify
+graphify-out/
