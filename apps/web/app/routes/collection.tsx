@@ -14,8 +14,10 @@ import {
 } from "~/components/CollectionBrowse";
 import { ProductCard } from "~/components/ProductCard";
 import { loadCollectionPage } from "~/lib/collection";
+import { envContext } from "~/lib/env";
 import { storefrontClientContext } from "~/lib/storefront";
 import { formatPageTitle, getShopNameFromRootMatch } from "~/lib/storefront-shop";
+import { getRatingsForProducts } from "~/lib/yotpo";
 
 import type { Route } from "./+types/collection";
 
@@ -35,7 +37,22 @@ export async function loader({ context, params, request }: Route.LoaderArgs) {
   if (!handle) throw new Response("Not Found", { status: 404 });
 
   const storefrontClient = context.get(storefrontClientContext);
-  return loadCollectionPage({ storefrontClient, handle, request });
+  const page = await loadCollectionPage({ storefrontClient, handle, request });
+  const ratings = await getRatingsForProducts(
+    {
+      storeId: context.get(envContext).PUBLIC_YOTPO_STORE_ID,
+      waitUntil: context.waitUntil,
+    },
+    page.products.map((product) => product.id),
+  );
+
+  return {
+    ...page,
+    products: page.products.map((product) => ({
+      ...product,
+      rating: ratings[product.id] ?? null,
+    })),
+  };
 }
 
 type CollectionData = Route.ComponentProps["loaderData"]["collection"];
@@ -145,7 +162,7 @@ function ProductGrid({ products }: { products: readonly ProductNode[] }) {
       >
         {products.map((product, index) => (
           <li key={`${product.handle}-${index}`}>
-            <ProductCard product={product} priority={index < 3} />
+            <ProductCard product={product} priority={index < 3} rating={product.rating} />
           </li>
         ))}
       </ul>

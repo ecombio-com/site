@@ -12,6 +12,7 @@ export type Env = {
   PUBLIC_SANITY_PROJECT_ID?: string;
   PUBLIC_SANITY_DATASET?: string;
   PUBLIC_SANITY_API_VERSION?: string;
+  PUBLIC_YOTPO_STORE_ID?: string;
 };
 
 export const envContext = createContext<Env>();

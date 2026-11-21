@@ -1,10 +1,13 @@
 import { gql, type StorefrontApi } from "@shopify/hydrogen";
 import { Link } from "react-router";
 
+import { StarRating } from "~/components/StarRating";
 import { compareMoney, formatPrice } from "~/lib/money";
+import type { YotpoRating } from "~/lib/yotpo";
 
 export const PRODUCT_CARD_FRAGMENT = gql(`
   fragment ProductCard on Product {
+    id
     handle
     title
     featuredImage {
@@ -47,9 +50,10 @@ export type ProductCardData = StorefrontApi.ResultOf<
 type ProductCardProps = {
   product: ProductCardData;
   priority?: boolean;
+  rating?: YotpoRating | null;
 };
 
-export function ProductCard({ product, priority = false }: ProductCardProps) {
+export function ProductCard({ product, priority = false, rating = null }: ProductCardProps) {
   const primaryImage = product.featuredImage ?? product.images.nodes[0] ?? null;
   const hoverImage = product.images.nodes[1] ?? null;
   const price = product.priceRange.minVariantPrice;
@@ -100,6 +104,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             {product.title}
           </Link>
         </h3>
+        {rating ? (
+          <StarRating score={rating.averageScore} count={rating.totalReviews} />
+        ) : null}
         <div className="inline-flex flex-wrap items-baseline gap-2 text-sm">
           {onSale ? (
             <>
