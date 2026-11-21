@@ -12,3 +12,9 @@ build
 .firecrawl/
 *.tsbuildinfo
 .hydrogen-gql-*.json
+
+# playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
