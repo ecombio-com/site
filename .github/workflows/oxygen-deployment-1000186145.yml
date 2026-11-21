@@ -28,13 +28,13 @@ jobs:
         run: npm install -g pnpm@12.21.0
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --filter "@site/hydrogen..."
+        run: pnpm install --frozen-lockfile --filter "web..."
 
       - name: Build
-        run: pnpm --filter @site/hydrogen run build
+        run: pnpm --filter web run build
 
       - name: Deploy to Oxygen
-        working-directory: apps/hydrogen
+        working-directory: apps/web
         run: pnpm run deploy
         env:
           SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000186145 }}
