@@ -1,0 +1,93 @@
+/* design.css: DESIGN.md (Nike-inspired) overrides. Imported after tokens.css.
+   Delete this file and its @import to revert fully. */
+
+@import "@fontsource-variable/inter";
+@import "@fontsource/bebas-neue/400.css";
+
+@theme {
+  /* Surfaces & text */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f5f5f5;   /* soft-cloud */
+  --color-on-surface: #111111;          /* ink */
+  --color-on-surface-secondary: #707072;/* mute */
+  --color-border: #cacacb;              /* hairline */
+
+  /* Brand: everything interactive derives from this */
+  --color-primary: #111111;
+  --color-accent: #111111;              /* focus rings: ink outline */
+
+  /* Semantic */
+  --color-sale: #d30005;
+  --color-success: #007d48;
+  --color-info: #1151ff;
+
+  /* Shape: pills for CTAs/inputs, square cards */
+  --radius-button: 1.875rem;            /* 30px */
+  --radius-input: 1.5rem;               /* 24px */
+
+  /* Flat: no elevation anywhere */
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+
+  /* Type */
+  --font-body: "Inter Variable", "Inter", "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  --font-heading: "Inter Variable", "Inter", "Helvetica Now Display Medium", Helvetica, Arial, sans-serif;
+  --font-display: "Nike Futura ND", "Bebas Neue", Impact, sans-serif;
+
+  /* Layout */
+  --spacing-page: 90rem;                /* 1440px */
+  --spacing-control-height: 2.5rem;     /* 40px */
+}
+
+/* Unlayered so these beat the base-layer media query in tokens.css */
+:root {
+  --spacing-margin: 1.5rem;
+
+  --type-heading-2xl-size: 32px;
+  --type-heading-xl-size: 32px;
+  --type-heading-lg-size: 24px;
+  --type-heading-md-size: 16px;
+  --type-heading-sm-size: 16px;
+  --type-subheading-size: 12px;
+
+  --button-padding-y: 0.75rem;
+  --button-padding-x: 1.5rem;
+  --button-font-size: 1rem;
+  --input-padding-y: 0.5rem;
+  --input-padding-x: 1rem;
+  --input-font-size: 1rem;
+}
+@media (min-width: 48rem) { :root { --spacing-margin: 3rem; } }
+
+@layer components {
+  .type-display, .type-heading-xl, .type-heading-lg,
+  .type-heading-md, .type-heading-sm { font-weight: 500; }
+  .type-body { line-height: 1.5; }
+
+  /* Campaign headline: hero lockups ONLY. Bebas has one weight (400). */
+  .type-campaign {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 640px)  { .type-campaign { font-size: 64px; } }
+  @media (min-width: 1024px) { .type-campaign { font-size: 96px; } }
+
+  .button-primary, .button-secondary, .button-outline,
+  .button-surface, .button-shop-pay {
+    border-radius: var(--radius-button);
+    font-weight: 500;
+  }
+  .button-secondary { border-color: transparent; }
+  .button-icon { border-radius: 9999px; }
+
+  .option-pill { border-radius: var(--radius-button); }
+  .nav-dropdown-inner { border: 1px solid var(--color-border); border-radius: 0; }
+  .richtext h1, .richtext h2, .richtext h3,
+  .richtext h4, .richtext h5, .richtext h6 { font-weight: 500; }
+}

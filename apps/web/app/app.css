@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./tokens.css";
+@import "./design.css";
 
 /* App-only CSS the frozen core (tokens.css) does not own.
  *
@@ -85,3 +86,4 @@ body:has(.drawer-right[open]),
 body:has(.drawer-left[open]) {
   overflow: hidden;
 }
+
