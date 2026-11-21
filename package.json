@@ -8,12 +8,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "dev:hydrogen:bicyclebio": "pnpm --filter @site/hydrogen run dev:bicyclebio",
-    "dev:hydrogen:scooterbio": "pnpm --filter @site/hydrogen run dev:scooterbio",
-    "dev:hydrogen:skaterbio": "pnpm --filter @site/hydrogen run dev:skaterbio",
-    "dev:headless": "pnpm --filter @site/headless run dev"
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "portless": "0.18.1",

@@ -8,3 +8,7 @@ build
 !.env.example
 .vercel
 .DS_Store
+# generated
+.firecrawl/
+*.tsbuildinfo
+.hydrogen-gql-*.json

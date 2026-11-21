@@ -274,7 +274,7 @@ importers:
         version: 8.17.0
       '@shopify/hydrogen':
         specifier: 2026.10.3
-        version: 2026.10.3(graphql@16.15.0)(react@19.3.1)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 2026.10.3(graphql@16.15.0)(react@19.3.1)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
       isbot:
         specifier: ^5.1.36
         version: 5.2.3
@@ -290,19 +290,19 @@ importers:
     devDependencies:
       '@react-router/dev':
         specifier: 7.15.1
-        version: 7.15.1(@types/node@22.20.5)(babel-plugin-macros@3.1.0)(jiti@2.7.0)(lightningcss@1.33.0)(react-router@7.15.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@10.2.2)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(yaml@2.9.1)
+        version: 7.15.1(@types/node@22.20.5)(babel-plugin-macros@3.1.0)(jiti@2.7.0)(lightningcss@1.33.0)(react-router@7.15.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@10.2.2)(tsx@4.23.15)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(yaml@2.9.1)
       '@shopify/cli':
         specifier: 4.8.1
         version: 4.8.1
       '@shopify/mini-oxygen':
         specifier: 4.3.0
-        version: 4.3.0(supports-color@10.2.2)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 4.3.0(supports-color@10.2.2)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
       '@shopify/oxygen-workers-types':
         specifier: ^4.1.6
         version: 4.2.0
       '@tailwindcss/vite':
         specifier: ^4.2.2
-        version: 4.3.5(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 4.3.5(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
       '@types/node':
         specifier: ^22
         version: 22.20.5
@@ -314,7 +314,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       gql.tada:
         specifier: ^1.9.2
-        version: 1.9.2(graphql@16.15.0)(typescript@5.9.3)
+        version: 1.11.5(graphql@16.15.0)(typescript@5.9.3)
       graphql:
         specifier: ^16.13.2
         version: 16.15.0
@@ -326,9 +326,28 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^8.0.3
-        version: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+        version: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
 
   packages/config-typescript: {}
+
+  packages/firecrawl:
+    dependencies:
+      '@mendable/firecrawl-js':
+        specifier: ^4.54.0
+        version: 4.54.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+    devDependencies:
+      '@site/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/node':
+        specifier: ^22.20.5
+        version: 22.20.5
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
 
   packages/shopify:
     devDependencies:
@@ -1774,6 +1793,20 @@ packages:
       '@gql.tada/vue-support':
         optional: true
 
+  '@gql.tada/cli-utils@1.9.5':
+    resolution: {integrity: sha512-v/bp+YtSrN9SqekDIGYwvbUQjeh0OQcVcVQVdQ2+uT22ljlyfOP0I/Atl1l1S/CtQtkbMQblQ0c7xtnwWZnG1w==}
+    peerDependencies:
+      '@0no-co/graphqlsp': ^1.16.0
+      '@gql.tada/svelte-support': 1.0.3
+      '@gql.tada/vue-support': 1.0.3
+      graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
+      typescript: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@gql.tada/svelte-support':
+        optional: true
+      '@gql.tada/vue-support':
+        optional: true
+
   '@gql.tada/internal@1.0.9':
     resolution: {integrity: sha512-Bp8yi+kLrzIJ3l5Dfxhz48H4OCH2LCX+pShaPcJgh+oiBt6clrjUKDYNDD3Z78aDQ3+Tyrxe4dd0MfLgpSLPPg==}
     peerDependencies:
@@ -2297,6 +2330,10 @@ packages:
 
   '@marijn/find-cluster-break@1.0.4':
     resolution: {integrity: sha512-Wy0V7+SGUjnF9/TkiM1hKVDPj7jKXduPNboMVtHTA8dySMURWqfg/JZ9E2Sq8JgSJmkl7k7Qe9FLeMSrSraWmQ==}
+
+  '@mendable/firecrawl-js@4.54.0':
+    resolution: {integrity: sha512-Yi0sZzzoCaEj4MrbPu4djv7/4ZmcyCWktQDCFDtOLAol1Vuim1uMI41EL4AG+IeX73d1Gl4AgWmdUSLeT55iEA==}
+    engines: {node: '>=18.0.0'}
 
   '@mjackson/node-fetch-server@0.2.0':
     resolution: {integrity: sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==}
@@ -4153,6 +4190,10 @@ packages:
     resolution: {integrity: sha512-Xwrja8nx9e5o2N1my4DsKCeKpdrnACyr1wtbPxBDgGzKzKyE9kRtBFA8mWldI+RVlD7CBZNWY/wQ2+ydwOR6kQ==}
     engines: {node: '>=14.0'}
 
+  agent-base@6.0.2:
+    resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
+    engines: {node: '>= 6.0.0'}
+
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
     engines: {node: '>= 14'}
@@ -4236,6 +4277,9 @@ packages:
   axe-core@4.14.1:
     resolution: {integrity: sha512-FHfa+lmNjQZfJz1q8wKqIDwC6DExcHt/pkjNQb09a3NPjCKg2rhu5qb2S4r76ASyFNNtuFooJpZe37OgudVGtQ==}
     engines: {node: '>=4'}
+
+  axios@1.20.0:
+    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -5105,6 +5149,10 @@ packages:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
 
+  firecrawl@4.54.0:
+    resolution: {integrity: sha512-r5Jc8ustGrZJQ+plOFJ+X9c7KHXHCMUqoH0j8oWpfeYHoiuZDctXq0U4nx0JnscHGCfIyFd9aj8BJ5B2CKbpFQ==}
+    engines: {node: '>=18.0.0'}
+
   flat-cache@6.1.23:
     resolution: {integrity: sha512-f++BY9pTk+983xK1FLzlLpmM0i0z+jHmx3QESGkURMXujQZz1k5wzwX6hjnQ8goaD0B+sYnDK1yZ6MTyZfUaqA==}
 
@@ -5114,6 +5162,15 @@ packages:
   focus-lock@1.3.6:
     resolution: {integrity: sha512-Ik/6OCk9RQQ0T5Xw+hKNLWrjSMtv51dD4GRmJjbD5a58TIEpI5a5iXagKVl3Z5UuyslMCA8Xwnu76jQob62Yhg==}
     engines: {node: '>=10'}
+
+  follow-redirects@1.16.3:
+    resolution: {integrity: sha512-toOSoqN6d51Wjf1aOFJYcoVv1aND9rj/CwjLU0Vz40oDuSpWDayCeKe4JpL5NL0WdFvoOOCI3BRo69HahjbR1A==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   form-data@4.0.6:
     resolution: {integrity: sha512-vKatAh4SlVfgbv+YtmhiRjhEMJsYpsG1Y2rMQtR+SVSbytsSD1YGzDIcrAJmdFec88u/+VoGmxnl+80gL1tRCQ==}
@@ -5232,6 +5289,12 @@ packages:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
 
+  gql.tada@1.11.5:
+    resolution: {integrity: sha512-O9Wa+tvXnuocp5P/m/1RvPPV71weLq2KgmoYP4GzBwxxHB8QsrTdz9fWyBey89Phpzbi9hmy8AqyV9dO36sq/A==}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+
   gql.tada@1.9.2:
     resolution: {integrity: sha512-QxRHVpxtrOVdYXz6oavq0lBM+Zdp0swapLGJcD4SLpXDcsD337BHDFrzqqjfkbepv0sSAiO0LGabu1kI5D5Gyg==}
     hasBin: true
@@ -5347,6 +5410,10 @@ packages:
   http-proxy-agent@7.0.2:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
     engines: {node: '>= 14'}
+
+  https-proxy-agent@5.0.1:
+    resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
+    engines: {node: '>= 6'}
 
   https-proxy-agent@7.0.6:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
@@ -6300,6 +6367,10 @@ packages:
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
 
+  proxy-from-env@2.1.0:
+    resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
+    engines: {node: '>=10'}
+
   pump@2.0.1:
     resolution: {integrity: sha512-ruPMNRkN3MHP1cWJc9OWr+T/xDP0jhXYCLfJcBuX54hhfIBnaQmAUMfDcG4DM5UMWByBbJY69QSphm3jtDKIkA==}
 
@@ -6997,6 +7068,11 @@ packages:
   tslib@2.9.1:
     resolution: {integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==}
 
+  tsx@4.23.15:
+    resolution: {integrity: sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
 
@@ -7463,6 +7539,11 @@ packages:
 
   youch@4.1.0-beta.10:
     resolution: {integrity: sha512-rLfVLB4FgQneDr0dv1oddCVZmKjcJ6yX6mS4pU82Mq/Dt9a3cLZQ62pDBL4AUO+uVrCvtWz3ZFUL2HFAFJ/BXQ==}
+
+  zod-to-json-schema@3.25.2:
+    resolution: {integrity: sha512-O/PgfnpT1xKSDeQYSCfRI5Gy3hPf91mKVDuYLUHZJMiDFptvP41MSnWofm8dnCm0256ZNfZIM7DSzuSMAFnjHA==}
+    peerDependencies:
+      zod: ^3.25.28 || ^4
 
   zod-validation-error@4.0.2:
     resolution: {integrity: sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==}
@@ -9225,6 +9306,13 @@ snapshots:
       graphql: 16.15.0
       typescript: 5.9.3
 
+  '@gql.tada/cli-utils@1.9.5(@0no-co/graphqlsp@1.18.0(graphql@16.15.0)(typescript@5.9.3))(graphql@16.15.0)(typescript@5.9.3)':
+    dependencies:
+      '@0no-co/graphqlsp': 1.18.0(graphql@16.15.0)(typescript@5.9.3)
+      '@gql.tada/internal': 1.3.0(graphql@16.15.0)(typescript@5.9.3)
+      graphql: 16.15.0
+      typescript: 5.9.3
+
   '@gql.tada/internal@1.0.9(graphql@16.15.0)(typescript@5.9.3)':
     dependencies:
       '@0no-co/graphql.web': 1.3.4(graphql@16.15.0)
@@ -9669,6 +9757,16 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.4': {}
 
+  '@mendable/firecrawl-js@4.54.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)':
+    dependencies:
+      axios: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      firecrawl: 4.54.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      zod: 4.6.7
+      zod-to-json-schema: 3.25.2(zod@4.6.7)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@mjackson/node-fetch-server@0.2.0': {}
 
   '@mjackson/node-fetch-server@0.7.0': {}
@@ -10109,7 +10207,7 @@ snapshots:
 
   '@portabletext/types@4.0.2': {}
 
-  '@react-router/dev@7.15.1(@types/node@22.20.5)(babel-plugin-macros@3.1.0)(jiti@2.7.0)(lightningcss@1.33.0)(react-router@7.15.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@10.2.2)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(yaml@2.9.1)':
+  '@react-router/dev@7.15.1(@types/node@22.20.5)(babel-plugin-macros@3.1.0)(jiti@2.7.0)(lightningcss@1.33.0)(react-router@7.15.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@10.2.2)(tsx@4.23.15)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(yaml@2.9.1)':
     dependencies:
       '@babel/core': 7.29.13(supports-color@10.2.2)
       '@babel/generator': 7.29.14
@@ -10139,8 +10237,8 @@ snapshots:
       semver: 7.8.6
       tinyglobby: 0.2.17
       valibot: 1.5.0(typescript@5.9.3)
-      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
-      vite-node: 3.2.4(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@10.2.2)(yaml@2.9.1)
+      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
+      vite-node: 3.2.4(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@10.2.2)(tsx@4.23.15)(yaml@2.9.1)
     optionalDependencies:
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -11284,20 +11382,20 @@ snapshots:
       esbuild: 0.28.1
       global-agent: 3.0.0
 
-  '@shopify/hydrogen@2026.10.3(graphql@16.15.0)(react@19.3.1)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@shopify/hydrogen@2026.10.3(graphql@16.15.0)(react@19.3.1)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       cross-spawn: 7.0.6
       gql.tada: 1.9.2(graphql@16.15.0)(typescript@5.9.3)
     optionalDependencies:
       react: 19.3.1
-      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
       - '@gql.tada/vue-support'
       - graphql
       - typescript
 
-  '@shopify/mini-oxygen@4.3.0(supports-color@10.2.2)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@shopify/mini-oxygen@4.3.0(supports-color@10.2.2)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       '@mjackson/node-fetch-server': 0.7.0
       body-parser: 1.20.4(supports-color@10.2.2)
@@ -11311,7 +11409,7 @@ snapshots:
       undici: 7.30.1
       ws: 8.23.0
     optionalDependencies:
-      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -11431,12 +11529,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.3.5
       '@tailwindcss/oxide-win32-x64-msvc': 4.3.5
 
-  '@tailwindcss/vite@4.3.5(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@tailwindcss/vite@4.3.5(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       '@tailwindcss/node': 4.3.5
       '@tailwindcss/oxide': 4.3.5
       tailwindcss: 4.3.5
-      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
 
   '@tanem/react-nprogress@5.0.63(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
@@ -11767,6 +11865,12 @@ snapshots:
 
   adm-zip@0.6.1: {}
 
+  agent-base@6.0.2(supports-color@10.2.2):
+    dependencies:
+      debug: 4.4.3(supports-color@10.2.2)
+    transitivePeerDependencies:
+      - supports-color
+
   agent-base@7.1.4: {}
 
   ajv@6.15.0:
@@ -11828,6 +11932,16 @@ snapshots:
   aws4@1.13.2: {}
 
   axe-core@4.14.1: {}
+
+  axios@1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2):
+    dependencies:
+      follow-redirects: 1.16.3(debug@4.4.3(supports-color@10.2.2))
+      form-data: 4.0.6
+      https-proxy-agent: 5.0.1(supports-color@10.2.2)
+      proxy-from-env: 2.1.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
 
   axobject-query@4.1.0: {}
 
@@ -12827,6 +12941,15 @@ snapshots:
       locate-path: 6.0.0
       path-exists: 4.0.0
 
+  firecrawl@4.54.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2):
+    dependencies:
+      axios: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      zod: 4.6.7
+      zod-to-json-schema: 3.25.2(zod@4.6.7)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   flat-cache@6.1.23:
     dependencies:
       cacheable: 2.5.0
@@ -12838,6 +12961,10 @@ snapshots:
   focus-lock@1.3.6:
     dependencies:
       tslib: 2.9.1
+
+  follow-redirects@1.16.3(debug@4.4.3(supports-color@10.2.2)):
+    optionalDependencies:
+      debug: 4.4.3(supports-color@10.2.2)
 
   form-data@4.0.6:
     dependencies:
@@ -12961,6 +13088,18 @@ snapshots:
       slash: 3.0.0
 
   gopd@1.2.0: {}
+
+  gql.tada@1.11.5(graphql@16.15.0)(typescript@5.9.3):
+    dependencies:
+      '@0no-co/graphql.web': 1.3.4(graphql@16.15.0)
+      '@0no-co/graphqlsp': 1.18.0(graphql@16.15.0)(typescript@5.9.3)
+      '@gql.tada/cli-utils': 1.9.5(@0no-co/graphqlsp@1.18.0(graphql@16.15.0)(typescript@5.9.3))(graphql@16.15.0)(typescript@5.9.3)
+      '@gql.tada/internal': 1.3.0(graphql@16.15.0)(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - graphql
 
   gql.tada@1.9.2(graphql@16.15.0)(typescript@5.9.3):
     dependencies:
@@ -13111,6 +13250,13 @@ snapshots:
     dependencies:
       agent-base: 7.1.4
       debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  https-proxy-agent@5.0.1(supports-color@10.2.2):
+    dependencies:
+      agent-base: 6.0.2(supports-color@10.2.2)
+      debug: 4.4.3(supports-color@10.2.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -13953,6 +14099,8 @@ snapshots:
   property-information@7.2.0: {}
 
   proto-list@1.2.4: {}
+
+  proxy-from-env@2.1.0: {}
 
   pump@2.0.1:
     dependencies:
@@ -14897,6 +15045,12 @@ snapshots:
 
   tslib@2.9.1: {}
 
+  tsx@4.23.15:
+    dependencies:
+      esbuild: 0.28.2
+    optionalDependencies:
+      fsevents: 2.3.3
+
   tunnel-agent@0.6.0:
     dependencies:
       safe-buffer: 5.2.1
@@ -15099,13 +15253,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.4
 
-  vite-node@3.2.4(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@10.2.2)(yaml@2.9.1):
+  vite-node@3.2.4(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@10.2.2)(tsx@4.23.15)(yaml@2.9.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.3(supports-color@10.2.2)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.3.8(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.1)
+      vite: 7.3.8(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.23.15)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -15120,7 +15274,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite@7.3.8(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.1):
+  vite@7.3.8(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.23.15)(yaml@2.9.1):
     dependencies:
       esbuild: 0.28.2
       fdir: 6.5.0(picomatch@4.0.7)
@@ -15133,6 +15287,22 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.7.0
       lightningcss: 1.33.0
+      tsx: 4.23.15
+      yaml: 2.9.1
+
+  vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1):
+    dependencies:
+      lightningcss: 1.33.0
+      picomatch: 4.0.7
+      postcss: 8.5.33
+      rolldown: 1.2.19
+      tinyglobby: 0.2.17
+    optionalDependencies:
+      '@types/node': 22.20.5
+      esbuild: 0.28.2
+      fsevents: 2.3.3
+      jiti: 2.7.0
+      tsx: 4.23.15
       yaml: 2.9.1
 
   vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1):
@@ -15276,6 +15446,10 @@ snapshots:
       '@speed-highlight/core': 1.2.24
       cookie: 1.1.1
       youch-core: 0.3.3
+
+  zod-to-json-schema@3.25.2(zod@4.6.7):
+    dependencies:
+      zod: 4.6.7
 
   zod-validation-error@4.0.2(zod@4.6.7):
     dependencies:
