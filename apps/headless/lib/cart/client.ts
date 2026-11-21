@@ -71,7 +71,7 @@ export function useCheckout() {
       } else if (!checkoutUrl) {
         setCheckoutError("Checkout is unavailable. Refresh your cart and try again.");
       } else {
-        window.location.assign("/payments");
+        window.location.assign("/checkout/address");
         return;
       }
     } catch {

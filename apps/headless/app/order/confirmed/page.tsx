@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { Container } from "@/components/ui/container";
 import { adminGraphql, getSessionEmail } from "@/lib/checkout/adapters";
 
 type OrderResult = {
@@ -35,29 +37,40 @@ async function loadVerifiedOrder(orderId: string | undefined) {
   }
 }
 
-export default async function ConfirmedPage({ searchParams }: { searchParams: Promise<{ order?: string }> }) {
+async function ConfirmedPageContent({ searchParams }: { searchParams: Promise<{ order?: string }> }) {
   const { order: orderId } = await searchParams;
   const order = await loadVerifiedOrder(orderId);
 
   return (
-    <main>
-      <h1>Thank you, your order is confirmed</h1>
+    <Container className="mx-auto w-full max-w-xl py-10">
+      <h1 className="mb-4 text-2xl font-semibold">Thank you, your order is confirmed</h1>
       {order ? (
-        <section>
-          <p>Order {order.name} · {order.displayFinancialStatus.toLowerCase()}</p>
-          <ul>
+        <section className="mb-6 rounded-md border border-neutral-300 p-4 text-sm">
+          <p className="mb-3 font-medium">Order {order.name} · {order.displayFinancialStatus.toLowerCase()}</p>
+          <ul className="mb-3 list-disc pl-5">
             {order.lineItems.nodes.map((l, i) => (
               <li key={i}>{l.quantity} × {l.title}</li>
             ))}
           </ul>
-          <p>
-            Total: {order.totalPriceSet.shopMoney.amount} {order.totalPriceSet.shopMoney.currencyCode}
+          <p className="font-medium">
+            Total: {new Intl.NumberFormat("en-US", { style: "currency", currency: order.totalPriceSet.shopMoney.currencyCode }).format(Number(order.totalPriceSet.shopMoney.amount))}
           </p>
         </section>
       ) : (
-        <p>A confirmation email is on its way.</p>
+        <p className="mb-6 text-sm text-neutral-600">A confirmation email is on its way.</p>
       )}
-      <a href="/account/orders">View your orders</a> · <a href="/">Continue shopping</a>
-    </main>
+      <div className="flex gap-4 text-sm">
+        <a href="/account/orders" className="underline">View your orders</a>
+        <a href="/" className="underline">Continue shopping</a>
+      </div>
+    </Container>
+  );
+}
+
+export default function ConfirmedPage(props: any) {
+  return (
+    <Suspense fallback={null}>
+      <ConfirmedPageContent {...props} />
+    </Suspense>
   );
 }

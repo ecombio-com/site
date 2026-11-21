@@ -18,37 +18,92 @@ function assertNoUserErrors(errs?: { message: string }[]) {
   if (errs?.length) throw new Error(errs.map((e) => e.message).join("; "));
 }
 
+export type Money = { amount: string; currencyCode: string };
 export type DeliveryOption = {
   handle: string;
   title: string;
-  estimatedCost: { amount: string; currencyCode: string };
+  estimatedCost: Money;
+};
+export type DeliveryAddress = {
+  firstName: string | null;
+  lastName: string | null;
+  address1: string | null;
+  address2: string | null;
+  city: string | null;
+  provinceCode: string | null;
+  zip: string | null;
 };
 export type DeliveryGroup = {
   id: string;
+  deliveryAddress: DeliveryAddress | null;
   deliveryOptions: DeliveryOption[];
-  selectedDeliveryOption: { handle: string } | null;
+  selectedDeliveryOption: DeliveryOption | null;
+};
+export type CartLine = {
+  id: string;
+  quantity: number;
+  cost: { totalAmount: Money };
+  merchandise: {
+    title: string;
+    product: { title: string };
+    image: { url: string; altText: string | null } | null;
+  };
 };
 export type CartSummary = {
   id: string;
   checkoutUrl: string;
   totalQuantity: number;
+  buyerEmail: string | null;
+  cost: { subtotalAmount: Money; totalAmount: Money; totalTaxAmount: Money | null };
+  lines: CartLine[];
   deliveryGroups: DeliveryGroup[];
 };
 
 const CART_FIELDS = `
   id checkoutUrl totalQuantity
+  buyerIdentity { email }
+  cost {
+    subtotalAmount { amount currencyCode }
+    totalAmount { amount currencyCode }
+    totalTaxAmount { amount currencyCode }
+  }
+  lines(first: 50) {
+    nodes {
+      id quantity
+      cost { totalAmount { amount currencyCode } }
+      merchandise {
+        ... on ProductVariant {
+          title
+          product { title }
+          image { url altText }
+        }
+      }
+    }
+  }
   deliveryGroups(first: 5) {
     nodes {
       id
-      selectedDeliveryOption { handle }
+      deliveryAddress { firstName lastName address1 address2 city provinceCode zip }
+      selectedDeliveryOption { handle title estimatedCost { amount currencyCode } }
       deliveryOptions { handle title estimatedCost { amount currencyCode } }
     }
   }
 `;
 
-type RawCart = Omit<CartSummary, "deliveryGroups"> & { deliveryGroups: { nodes: DeliveryGroup[] } };
-const flatten = (c: RawCart): CartSummary => ({ ...c, deliveryGroups: c.deliveryGroups.nodes });
-
+type RawCart = Omit<CartSummary, "deliveryGroups" | "lines" | "buyerEmail"> & {
+  deliveryGroups: { nodes: DeliveryGroup[] };
+  lines: { nodes: CartLine[] };
+  buyerIdentity: { email: string | null } | null;
+};
+const flatten = (c: RawCart): CartSummary => {
+  const { buyerIdentity, ...rest } = c;
+  return {
+    ...rest,
+    buyerEmail: buyerIdentity?.email ?? null,
+    lines: c.lines.nodes,
+    deliveryGroups: c.deliveryGroups.nodes,
+  };
+};
 export async function getCart(cartId: string): Promise<CartSummary | null> {
   const d = await sf<{ cart: RawCart | null }>(`query($id: ID!) { cart(id: $id) { ${CART_FIELDS} } }`, { id: cartId });
   return d.cart ? flatten(d.cart) : null;
