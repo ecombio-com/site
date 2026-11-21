@@ -1,4 +1,3 @@
-import type { CacheInstance } from "@shopify/hydrogen";
 
 // Yotpo storefront reads are public (no token); the store ID is the public app key.
 // The CDN sends `Cache-Control: no-store` and can lag by hours, so every response is
@@ -10,7 +9,6 @@ const TIMEOUT_MS = 4000;
 
 export type YotpoOptions = {
   storeId?: string;
-  cache: CacheInstance;
   waitUntil: ExecutionContext["waitUntil"];
 };
 
@@ -70,9 +68,10 @@ function toRating(score?: number, count?: number): YotpoRating | null {
   return { averageScore: Math.round(score * 10) / 10, totalReviews: count };
 }
 
-async function fetchJson(url: string, { cache, waitUntil }: YotpoOptions): Promise<unknown> {
+async function fetchJson(url: string, { waitUntil }: YotpoOptions): Promise<unknown> {
   const key = new Request(url);
   try {
+    const cache = await caches.open("yotpo-v1");
     const hit = await cache.match(key);
     if (hit) return await hit.json();
 
