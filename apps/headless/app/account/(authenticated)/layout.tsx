@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { type ReactNode, Suspense } from "react";
 
 import { AccountMobileTabs } from "@/components/account/mobile-tabs";
@@ -9,9 +8,8 @@ import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCustomerAccessToken, requireCustomerSession } from "@/lib/auth/server";
-import { shopConfig } from "@/lib/config";
-import { getCustomerProfile } from "@/lib/shopify/operations/customer/server";
+import { requireSession } from "@/lib/auth/session";
+import { getCustomerById } from "@/lib/shopify/customers";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -58,25 +56,18 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
 }
 
 async function AccountGate({ children }: { children: ReactNode }) {
-  if (!shopConfig.auth.isEnabled) notFound();
-  await requireCustomerSession();
+  await requireSession("/account");
   return <>{children}</>;
 }
 
 async function AccountLabel() {
-  if (!shopConfig.auth.isEnabled) notFound();
-  await requireCustomerSession();
-  const accessToken = await getCustomerAccessToken();
-  if (!accessToken) {
-    return <p className="text-sm font-medium">Account</p>;
-  }
-  const profile = await getCustomerProfile();
-  if (!profile) return null;
-  const name = [profile.firstName, profile.lastName].filter(Boolean).join(" ");
+  const session = await requireSession("/account");
+  const profile = await getCustomerById(session.customerId);
+  const name = [profile?.firstName, profile?.lastName].filter(Boolean).join(" ");
   return (
     <div>
-      <p className="text-sm font-medium">{name || profile.email}</p>
-      <p className="text-xs text-muted-foreground">{profile.email}</p>
+      <p className="text-sm font-medium">{name || session.email}</p>
+      <p className="text-xs text-muted-foreground">{session.email}</p>
     </div>
   );
 }

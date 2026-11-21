@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { adminGraphql } from "./admin";
 
 export type ShopifyCustomer = {
@@ -92,3 +93,14 @@ export async function getCustomerWithOrders(
   if (!data.customer) return null;
   return { ...data.customer, orders: data.customer.orders.nodes };
 }
+
+/** Per-request memoized lookup. `customerId` must come from the session. */
+export const getCustomerById = cache(
+  async (customerId: string): Promise<ShopifyCustomer | null> => {
+    const data = await adminGraphql<{ customer: ShopifyCustomer | null }>(
+      `query CustomerById($id: ID!) { customer(id: $id) { ${CUSTOMER_FIELDS} } }`,
+      { id: customerId },
+    );
+    return data.customer;
+  },
+);
