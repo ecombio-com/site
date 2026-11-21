@@ -40,7 +40,7 @@ export function Nav() {
               <SearchModal />
             </PredictiveSearchProvider>
           )}
-          {shopConfig.auth.isEnabled && (
+          {(
             <Suspense fallback={<NavAccountFallback />}>
               <NavAccount />
             </Suspense>
