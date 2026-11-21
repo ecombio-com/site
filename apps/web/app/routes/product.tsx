@@ -11,9 +11,18 @@ import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { ProductCard, PRODUCT_CARD_FRAGMENT } from "~/components/ProductCard";
+import { ReviewsSection } from "~/components/ReviewsSection";
+import { StarRating } from "~/components/StarRating";
 import { openCartDrawer } from "~/lib/cart-drawer";
+import { envContext } from "~/lib/env";
 import { formatPrice, salePercent } from "~/lib/money";
 import { ProductProvider, useProductForm } from "~/lib/product";
+import {
+  getProductReviews,
+  getRatingsForProducts,
+  type YotpoRating,
+  type YotpoReviews,
+} from "~/lib/yotpo";
 import { storefrontClientContext } from "~/lib/storefront";
 import { formatPageTitle, getShopNameFromRootMatch } from "~/lib/storefront-shop";
 
@@ -158,11 +167,26 @@ export async function loader({ context, params, request }: Route.LoaderArgs) {
 
   if (!data?.product) throw new Response("Not Found", { status: 404 });
 
+  const yotpoOptions = {
+    storeId: context.get(envContext).PUBLIC_YOTPO_STORE_ID,
+    waitUntil: context.waitUntil,
+  };
+  const relatedProducts = data.products.nodes
+    .filter((product) => product.handle !== data.product?.handle)
+    .slice(0, 4);
+  const [yotpo, relatedRatings] = await Promise.all([
+    getProductReviews(yotpoOptions, data.product.id),
+    getRatingsForProducts(
+      yotpoOptions,
+      relatedProducts.map((product) => product.id),
+    ),
+  ]);
+
   return {
     product: data.product,
-    relatedProducts: data.products.nodes
-      .filter((product) => product.handle !== data.product?.handle)
-      .slice(0, 4),
+    relatedProducts,
+    relatedRatings,
+    yotpo,
   };
 }
 
@@ -222,6 +246,42 @@ function hasSwatchData(product: ProductData, optionName: string) {
     option?.optionValues.some(
       (value) => value.swatch?.color || value.swatch?.image?.previewImage?.url,
     ),
+  );
+}
+
+function ProductJsonLd({ product, yotpo }: { product: ProductData; yotpo: YotpoReviews | null }) {
+  const variant = product.selectedOrFirstAvailableVariant;
+  const price = variant?.price ?? product.priceRange.minVariantPrice;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description || undefined,
+    image: product.featuredImage?.url ? [product.featuredImage.url] : undefined,
+    brand: product.vendor ? { "@type": "Brand", name: product.vendor } : undefined,
+    sku: variant?.sku || undefined,
+    offers: {
+      "@type": "Offer",
+      price: price.amount,
+      priceCurrency: price.currencyCode,
+      availability: variant?.availableForSale
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+    },
+    aggregateRating: yotpo
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: yotpo.rating.averageScore,
+          reviewCount: yotpo.rating.totalReviews,
+        }
+      : undefined,
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+    />
   );
 }
 
@@ -679,9 +739,11 @@ function AddToCart({
 function ProductInfo({
   product,
   selectedVariant,
+  rating,
 }: {
   product: ProductData;
   selectedVariant: ProductVariant | null;
+  rating: YotpoRating | null;
 }) {
   const [quantity, setQuantity] = useState(1);
 
@@ -694,6 +756,11 @@ function ProductInfo({
           </p>
         ) : null}
         <h1 className="type-display text-on-surface">{product.title}</h1>
+        {rating ? (
+          <div className="mt-3">
+            <StarRating score={rating.averageScore} count={rating.totalReviews} href="#reviews" />
+          </div>
+        ) : null}
         <PriceBlock product={product} selectedVariant={selectedVariant} />
         <InventoryHint selectedVariant={selectedVariant} />
       </div>
@@ -740,20 +807,32 @@ function ProductInfo({
   );
 }
 
-function ProductPageContent({ product }: { product: ProductData }) {
+function ProductPageContent({
+  product,
+  rating,
+}: {
+  product: ProductData;
+  rating: YotpoRating | null;
+}) {
   const { selectedVariant } = useProductForm();
 
   return (
     <section className="max-w-page px-margin mx-auto w-full pb-4">
       <div className="product-grid mb-16 grid grid-cols-1 gap-6 md:gap-12">
         <ProductGallery product={product} selectedVariant={selectedVariant} />
-        <ProductInfo product={product} selectedVariant={selectedVariant} />
+        <ProductInfo product={product} selectedVariant={selectedVariant} rating={rating} />
       </div>
     </section>
   );
 }
 
-function RelatedProducts({ products }: { products: RelatedProduct[] }) {
+function RelatedProducts({
+  products,
+  ratings,
+}: {
+  products: RelatedProduct[];
+  ratings: Record<string, YotpoRating | null>;
+}) {
   if (products.length === 0) return null;
 
   return (
@@ -772,7 +851,7 @@ function RelatedProducts({ products }: { products: RelatedProduct[] }) {
           >
             {products.map((product) => (
               <li key={product.handle}>
-                <ProductCard product={product} />
+                <ProductCard product={product} rating={ratings[product.id] ?? null} />
               </li>
             ))}
           </ul>
@@ -783,7 +862,7 @@ function RelatedProducts({ products }: { products: RelatedProduct[] }) {
 }
 
 export default function ProductRoute({ loaderData }: Route.ComponentProps) {
-  const { product, relatedProducts } = loaderData;
+  const { product, relatedProducts, relatedRatings, yotpo } = loaderData;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -807,9 +886,11 @@ export default function ProductRoute({ loaderData }: Route.ComponentProps) {
       }}
     >
       <ProductViewedTracker product={product} />
+      <ProductJsonLd product={product} yotpo={yotpo} />
       <main className="flex-1" id="main-content" tabIndex={-1}>
-        <ProductPageContent product={product} />
-        <RelatedProducts products={relatedProducts} />
+        <ProductPageContent product={product} rating={yotpo?.rating ?? null} />
+        <ReviewsSection yotpo={yotpo} />
+        <RelatedProducts products={relatedProducts} ratings={relatedRatings} />
       </main>
     </ProductProvider>
   );
