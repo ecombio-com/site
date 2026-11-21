@@ -9,6 +9,9 @@ export type Env = {
   PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID?: string;
   SESSION_SECRET?: string;
   SHOP_ID?: string;
+  PUBLIC_SANITY_PROJECT_ID?: string;
+  PUBLIC_SANITY_DATASET?: string;
+  PUBLIC_SANITY_API_VERSION?: string;
 };
 
 export const envContext = createContext<Env>();
