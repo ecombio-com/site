@@ -424,12 +424,18 @@ importers:
 
   apps/web:
     dependencies:
+      '@portabletext/react':
+        specifier: ^8.0.1
+        version: 8.0.1(react@19.3.1)
       '@remix-run/cookie':
         specifier: ^0.6.0
         version: 0.6.0
       '@remix-run/session':
         specifier: ^0.4.2
         version: 0.4.3
+      '@sanity/client':
+        specifier: ^8.17.0
+        version: 8.17.0
       '@shopify/hydrogen':
         specifier: 2026.10.3
         version: 2026.10.3(graphql@16.15.0)(react@19.3.1)(typescript@5.9.3)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
