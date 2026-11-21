@@ -34,6 +34,7 @@ jobs:
         run: pnpm --filter @site/hydrogen run build
 
       - name: Deploy to Oxygen
-        run: pnpm --filter @site/hydrogen run deploy
+        working-directory: apps/hydrogen
+        run: pnpm run deploy
         env:
           SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000186154 }}

@@ -1,15 +1,15 @@
 import { UserRoundCheckIcon, UserRoundIcon } from "lucide-react";
 
 import { Link } from "@/components/ui/link";
-import { isCustomerLoggedIn } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/session";
 
 export async function NavAccount() {
-  const loggedIn = await isCustomerLoggedIn();
+  const loggedIn = (await getSession()) !== null;
   if (!loggedIn) {
     return (
       // oxlint-disable-next-line next/no-html-link-for-pages -- Sign-in must be a full document navigation that is never prefetched, because the proxy starts OAuth.
       <a
-        href="/account/login"
+        href="/login"
         className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
       >
         <UserRoundIcon className="size-5" />
